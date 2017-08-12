@@ -1,0 +1,16 @@
+.path-input{
+    margin-bottom:10px;
+}
+
+.path-added-panel div{
+    padding:10px;
+}
+
+.search-btn{
+    margin-bottom:5px;
+}
+
+#search-footer{
+    position:relative;
+    bottom:0px;
+}

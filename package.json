@@ -1,0 +1,19 @@
+{
+  "name": "autounityversions",
+  "version": "1.0.0",
+  "description": "all in one place app",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Adomas Griskelis",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.7.5"
+  },
+  "dependencies": {
+    "angular": "^1.6.5",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1"
+  }
+}

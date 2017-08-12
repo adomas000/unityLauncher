@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <!--fixes electron stuff to handle window module and declare it-->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script> 
+
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="./src/js/routes/router.js"></script>
+    <script>if (window.module) module = window.module;</script>
+    
+    <!--my css-->
+    <link rel="stylesheet" href="./src/css/searchUnity.css">
+    <!--end-->
+  </head>
+  <body ng-app="App" ng-controller="initCtrl">
+    <ng-view></ng-view>
+  </body>
+  
+  <script>
+    require("./src/js/routes/router.js");
+    require("./src/js/controllers/initCtrl.js");
+    require("./src/js/controllers/searchUnityCtrl.js");
+  </script>
+</html>
