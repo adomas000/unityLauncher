@@ -2,26 +2,36 @@
 <div ng-controller="searchUnityCtrl" style="height:100%">
     <h3 style="text-align:center;">Search for Unity versions by adding paths or doing automatic search</h3>
     <row id="paths">
-        <div class="col-xs-12 col-md-10 col-md-offset-1">
-            <div class="panel panel-default path-added-panel">
-                <div class="panel-body">
-                    D:\unity
-                </div>
-            </div>
-        </div>
-        <!-- /.col-lg-6 -->
-    </row>
-    <row>
-        <div class="col-xs-12 col-md-10 col-md-offset-1">
-            <div class="input-group path-input">
-                <input type="text" class="form-control" placeholder="Search for...">
+         <div class="col-xs-12 col-md-10 col-md-offset-1">
+            <div class="input-group path-added-panel">
+                <input type="text" class="form-control" disabled="true">
                 <span class="input-group-btn">
-                <button class="btn btn-default add-path" type="button">Add path</button>
-            </span>
+                    <button class="btn btn-danger remove-path" type="button">delete</button>
+                </span>
             </div>
             <!-- /input-group -->
         </div>
-        <!-- /.col-lg-6 -->      
+        <!-- /.col-lg-6 -->
+    </row>
+    
+    <row>
+
+        <!-- /.col-lg-6 -->    
+        <div class="col-xs-12 col-md-10 col-md-offset-1 path-input-wrapper">
+            <div class="input-group path-input">
+                <input type="file" class="form-control" id="path-input-main" placeholder="Search for...">
+                <div class="input-group-btn">
+                    <button class="btn btn-default options-path dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button">option<span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a onclick="pasteDirectory()">Paste path</a></li>
+                        <li><a onclick="selectDirectory()" >select path</a></li>
+                    </ul>
+                    <button class="btn btn-default add-path" type="button">Add</button>
+                </div>
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
     </row>
 
     <row id="search-footer">
@@ -32,14 +42,70 @@
             <a href="#" class="btn btn-default form-control search-btn">Full PC search(will take longer)</a>
         </div>
     </row>
+    
     <script>
+        var fileSelection = require("./src/js/electronAPI/fileSelection.js");
+        var $paths = $("#paths");
+        var $pathNodeClone = $("#paths > div").first().clone(true,true);
+
         (function(){
+           
+            $("#paths > div").first().remove();
 
-            var $
+            $("#paths").on("click", ".remove-path",function(){
+                $(this).parent().parent().parent().remove(); //:DDDDDD gosh I am tired (it does indeed work)
+            });
+
             $(".add-path").click(function(){
-
+                var path = $(".path-input > input").val();
+                //var path = $(".path-input > input").files[0].path
+                $pathNodeClone.find(".path-added-panel > input").val(path);
+                //debugger;
+                $paths.append($pathNodeClone.clone());
+                
+            })  
+            
+        })()
+        // selecting dir folder
+        $("#path-input-main").click(function(e)        
+        {
+            if($(this).attr('type') =='text') return;
+            e.preventDefault();
+            //console.log(fileSelection);
+            fileSelection.selectDirectory()
+            .then(function(path){
+                console.log(path[0]);
+                emulatePathAdd(path[0]);
+            })
+            .catch(function(err){
+                console.log('path failed: ' + path);
             })
 
-        })()
+            
+        });
+
+        function emulatePathAdd(path)
+        {           
+            console.log(path);
+            $pathNodeClone.find(".path-added-panel > input").val(path);
+            $paths.append($pathNodeClone.clone());
+        }
+
+        function pasteDirectory()
+        {
+            $("#path-input-main").attr('type','text');
+        }
+
+        function selectDirectory()
+        {
+            $("#path-input-main").attr('type','file');
+        }
+        // const electron = require('electron')
+        // const dialog = electron.dialog
+        // function selectDirectory() {
+        //     dialog.showOpenDialog(mainWindow, {
+        //         properties: ['openDirectory']
+        //     })
+        // }
     </script>
 </div>
