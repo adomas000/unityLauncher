@@ -36,15 +36,16 @@
 
     <row id="search-footer">
         <div class="col-xs-12 col-md-5 col-md-offset-1">
-            <a href="#" class="btn btn-default form-control search-btn">Search(fast)</a>
+            <a href="#" class="btn btn-success form-control search-btn">Search(fast)</a>
         </div>
         <div class="col-xs-12 col-md-5 ">
-            <a href="#" class="btn btn-default form-control search-btn">Full PC search(will take longer)</a>
+            <a href="#" class="btn btn-warning form-control search-btn">Full PC search(will take longer)</a>
         </div>
     </row>
     
     <script>
         var fileSelection = require("./src/js/electronAPI/fileSelection.js");
+        var fs = require('fs');
         var $paths = $("#paths");
         var $pathNodeClone = $("#paths > div").first().clone(true,true);
 
@@ -87,10 +88,25 @@
         function emulatePathAdd(path)
         {           
             console.log(path);
+            var valid = checkIfPathValid(path);
+            if(!valid)
+            {
+                
+            }
             $pathNodeClone.find(".path-added-panel > input").val(path);
             $paths.append($pathNodeClone.clone());
         }
 
+        function checkIfPathValid(path)
+        {
+            
+            if (fs.existsSync(path)) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         function pasteDirectory()
         {
             $("#path-input-main").attr('type','text');
