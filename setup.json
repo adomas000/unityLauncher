@@ -1,4 +1,6 @@
 {
     "filename":"Unity.exe",
-    "forbidsearch":[] // ["C:\\", "D:\\"]
+    "skipDirectories":[],
+    "debug":true,
+    "includeRemovableStorage":false
 }

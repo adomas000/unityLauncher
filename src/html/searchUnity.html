@@ -36,34 +36,77 @@
 
     <row id="search-footer">
         <div class="col-xs-12 col-md-5 col-md-offset-1">
-            <a href="#" class="btn btn-success form-control search-btn">Search(fast)</a>
+            <a ng-click="searchWithPaths()"  class="btn btn-success form-control search-btn">Search(fast)</a>
         </div>
         <div class="col-xs-12 col-md-5 ">
-            <a href="#" class="btn btn-warning form-control search-btn">Full PC search(will take longer)</a>
+            <a ng-click="fullSearch()" class="btn btn-warning form-control search-btn">Full PC search(will take longer)</a>
         </div>
     </row>
+
+    
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"  id="searchWindow" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">                           
+                    <pre ng-bind-html-unsafe="all_output" ng-init="all_output='Initializing..'"  id="all_output" scroll-glue style="font-size:11px;overflow:auto;width: 100%;height: 200px; resize: none; margin-bottom:5px;border:1px solid #ccc">{{all_output}}</pre>                
+                    <pre ng-bind-html-unsafe="found_output" ng-init="found_output='Initializing..'" id="res_output" scroll-glue style="font-size:11px;overflow:auto; width: 100%;height: 200px; resize: none; border:1px solid #ccc">{{found_output}}</pre>
+                    
+                    <div class="row">
+                        <div class="col-xs-4" ng-model="count1" ng-init="count1='0'">Found: {{count1}}</div>
+                        <div class="col-xs-4" ng-model="count2" ng-init="count2='0'">Scanned: {{count2}}</div>                        
+                        <div class="col-xs-12">
+                            <a ng-click="stopSearch()" class="btn btn-danger form-control search-btn" data-dismiss="modal">Stop</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
     <script>
         var fileSelection = require("./src/js/electronAPI/fileSelection.js");
         var fs = require('fs');
+        //var toastr = require('toastr');
         var $paths = $("#paths");
         var $pathNodeClone = $("#paths > div").first().clone(true,true);
+
+        var paths = [];
 
         (function(){
            
             $("#paths > div").first().remove();
 
             $("#paths").on("click", ".remove-path",function(){
-                $(this).parent().parent().parent().remove(); //:DDDDDD gosh I am tired (it does indeed work)
+                //debugger;
+                console.log($(this).is($(".remove-path").first()));
+                var path = $(this).parents(".path-added-panel").find('input').val();
+                var index = paths.indexOf(path);
+                if(index < 0)
+                {
+                    toastr.error("Error when removing path(no such path found in saved) maybe it was already removed?");
+                }
+                paths.splice(index,index+1);
+                $(this).parent().parent().parent().remove();
+                toastr.info("path removed succesfully");
+                 //:DDDDDD gosh I am tired (it does indeed work)
             });
 
             $(".add-path").click(function(){
                 var path = $(".path-input > input").val();
+
+                var valid = checkIfPathValid(path);
+                if(!valid)
+                {
+                    toastr.error("invalid path");
+                    return;
+                }
                 //var path = $(".path-input > input").files[0].path
                 $pathNodeClone.find(".path-added-panel > input").val(path);
                 //debugger;
                 $paths.append($pathNodeClone.clone());
-                
+                toastr.success('path added!');
             })  
             
         })()
@@ -91,16 +134,20 @@
             var valid = checkIfPathValid(path);
             if(!valid)
             {
-                
+                toastr.error("invalid path");
+                return;
             }
             $pathNodeClone.find(".path-added-panel > input").val(path);
             $paths.append($pathNodeClone.clone());
+            paths.push(path);
+            toastr.success('path added!');
         }
 
         function checkIfPathValid(path)
         {
             
             if (fs.existsSync(path)) {
+                
                 return true;
             }
             else{
@@ -116,12 +163,30 @@
         {
             $("#path-input-main").attr('type','file');
         }
-        // const electron = require('electron')
-        // const dialog = electron.dialog
-        // function selectDirectory() {
-        //     dialog.showOpenDialog(mainWindow, {
-        //         properties: ['openDirectory']
-        //     })
-        // }
+        
+        $(".search-btn").click(function(){
+            $('#searchWindow').modal();
+            keepScrollDown();
+        })
+        var scroll;
+        //cancer cancer cancer spent 2 hours ...
+        function keepScrollDown()
+        {
+            //debugger;
+            var $fulloutput = $("#all_output");
+            var $resoutput  = $("#res_output");
+
+            scroll = setInterval(function(){
+                
+                $fulloutput.scrollTop($fulloutput.prop('scrollHeight'));
+                $resoutput .scrollTop($resoutput.prop('scrollHeight'));
+            },10);
+
+        }
+        $('#searchWindow').on('hidden.bs.modal', function () {
+            console.log("cleared interval");
+            clearInterval(scroll);
+        })
+        
     </script>
 </div>

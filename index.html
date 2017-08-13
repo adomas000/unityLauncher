@@ -5,17 +5,41 @@
     <title>Hello World!</title>
     <!--fixes electron stuff to handle window module and declare it-->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script> 
-
+    <!--// toastr options-->
+    
 
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angular-route/angular-route.min.js"></script>
+    <script src="node_modules/angularjs-scroll-glue/src/scrollglue.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <script src="./src/js/routes/router.js"></script>
-    <script>if (window.module) module = window.module;</script>
     
+    <script src="./src/js/routes/router.js"></script>
+    
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
+    <script src="node_modules/toastr/build/toastr.min.js"></script>
+    <script>
+     toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+    </script>
+    <script>if (window.module) module = window.module;</script>
     <!--my css-->
     <link rel="stylesheet" href="./src/css/searchUnity.css">
     <!--end-->

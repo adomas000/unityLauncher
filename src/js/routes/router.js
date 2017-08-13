@@ -1,4 +1,4 @@
-angular.module("App",["ngRoute"])
+angular.module("App",["ngRoute","luegg.directives"])
 
 .config(function($routeProvider){
     $routeProvider
