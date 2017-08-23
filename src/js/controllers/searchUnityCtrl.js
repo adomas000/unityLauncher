@@ -2,6 +2,7 @@ var walk = require('walk')
     , fs = require('fs')
     , walker;
 var promise = require("promise");
+var path    = require("path");
 angular.module("App")
 
 .controller("searchUnityCtrl",function($scope,$window,$http){
@@ -49,43 +50,21 @@ angular.module("App")
         var STOP = false;
         $scope.count1;
         $scope.count2;
+        var skipDirectories = $scope.options.skipDirectories;
+        //loop for the paths provided
         (function loop(i){
             
             if(i < $scope.paths.length) new promise(function(resolve, reject){
 
                  var tmp = [];
-                 walker = walk.walk($scope.paths[i], {filters: $scope.options.skipDirectories});
-                 //$scope.$evalAsync()
-                 walker.on("file", function (root, fileStats, next) {
-                    if(STOP) return resolve(tmp);
+                 (function loop2(j){
+                    walk($scope.paths[i],skipDirectories)
+                    .then(function(data){
+                        $scope.paths.splice(i,0,parentPath);
+                    })
+                 })
+                 
 
-                    fs.readFile(fileStats.name, function () {
-                        $scope.all_output += root +"\\"+ fileStats.name + "\n";
-                        $scope.count2++;
-                        $scope.$evalAsync()
-                        
-                        if(fileStats.name.match(/(.html)$/))
-                        {
-                            //console.log("found: "+ root +"\\"+ fileStats.name);
-                            $scope.found_output += root +"\\"+ fileStats.name + "\n";
-                            $scope.count1++;
-                            $scope.$evalAsync()                        
-                            tmp.push(root +"\\"+ fileStats.name);
-                            //console.log(fileStats);
-                        }
-                    next();
-                    });
-                });
-
-                walker.on("end", function () {
-                    resolve(tmp);
-                   
-                });
-
-                walker.on("error", function () {
-                    reject(tmp);
-                    
-                });
             }).then(function(tmp){
                 
                 resPaths = resPaths.concat(tmp);
@@ -113,6 +92,63 @@ angular.module("App")
 
         
 
+    }
+
+    function walk(path,filter={})
+    {
+        return new promise(function(relove,reject){
+            walker = walk.walk(path, {filters: filter});
+                 //$scope.$evalAsync()
+                walker.on("directories", function (root, dirs, next) {
+                if(STOP) return resolve(tmp);
+                //debugger;
+                // $scope.all_output += root +"\\"+ fileStats.name + "\n";
+                // $scope.count2++;
+                // $scope.$evalAsync()
+                if(dirs.length==2)
+                {
+                    if(dirs[0].name == "Editor" && dirs[1].name== "MonoDevelop")
+                    {
+                        
+                        console.log(root+"\\"+dirs[0].name);
+                        //walker = walk.walk(path.dirname(root),{filters: $scope.options.skipDirectories});
+                        return resolve({
+                            parentPath:path.dirname(root),
+                            unityPath:root+"\\"+dirs[0].name
+                        })
+                    }
+                }
+                next(); 
+                    
+                // fs.readFile(fileStats.name, function () {
+                //     $scope.all_output += root +"\\"+ fileStats.name + "\n";
+                //     $scope.count2++;
+                //     $scope.$evalAsync()
+                    
+                //     if(fileStats.name.match(/(.html)$/))
+                //     {
+                //         //console.log("found: "+ root +"\\"+ fileStats.name);
+                //         $scope.found_output += root +"\\"+ fileStats.name + "\n";
+                //         $scope.count1++;
+                //         $scope.$evalAsync()                        
+                //         tmp.push(root +"\\"+ fileStats.name);
+                //         //console.log(fileStats);
+                //     }
+                // next();
+                // });
+            });
+
+            walker.on("end", function () {
+                resolve(tmp);                 
+                
+            });
+
+            walker.on("error", function () {
+                reject(tmp);
+                
+            });
+        });
+   
     }
 
 });
