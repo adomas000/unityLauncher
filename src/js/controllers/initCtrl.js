@@ -13,7 +13,6 @@ angular.module("App")
     })
     .catch(function(reject){
         console.log("Error occured trying to retrieve file");
-
         window.location.hash = "#!/firstLaunch";
     })
 })

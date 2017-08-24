@@ -4,7 +4,8 @@
   "description": "all in one place app",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "s3": "node tests/search3.js"
   },
   "author": "Adomas Griskelis",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "jquery": "^3.2.1",
     "promise": "^8.0.1",
     "toastr": "^2.1.2",
-    "walk": "^2.3.9"
+    "walk": "^2.3.9",
+    "walker": "^1.0.7"
   }
 }
