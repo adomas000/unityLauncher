@@ -9,6 +9,7 @@ angular.module("App")
     .then(function(success){
 
         window.location.hash = "#!/main";
+        console.log("eyyy,unity paths exist so showing main.html");
         
     })
     .catch(function(reject){

@@ -59,20 +59,21 @@ angular.module("App")
             
             if(i < $scope.paths.length) new promise(function(resolve, reject){
 
-                
-                var ls = child.spawn('./dist/search2/search2.exe',[$scope.paths[i]]);
+                debugger;
+                var ls = child.spawn('./dist/search/search.exe',[$scope.paths[i]]);
                 ls.stdout.on("data",function(data){
                     data = data.toString().split("\n");
                     //data.replace(/\n|\r/g, "");
                     //console.log(data);
+
                     data.forEach(function(el){
                         if(el!="")
                         {
                             el = el.replace(/\n|\r/g, "");
-                                resPaths.push(el);
-                                $scope.found_output += el + "\n";
-                                $scope.count1++;
-                                $scope.$evalAsync();
+                            resPaths.push(el);
+                            $scope.found_output += el + "\n";
+                            $scope.count1++;
+                            $scope.$evalAsync();
                             
                         }
                         
@@ -89,6 +90,7 @@ angular.module("App")
                 
                 //resPaths = resPaths.concat(tmp);
                 console.log(resPaths);
+                fs.writeFileSync('./config/unityPaths.json',JSON.stringify(resPaths));
                 toastr.success(info);
                 if(!STOP) loop(i+1);
 
