@@ -13,3 +13,7 @@
 a{
     cursor:pointer;
 }
+
+.options-path{
+    border-radius:0px;
+}

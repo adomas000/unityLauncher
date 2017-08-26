@@ -6,7 +6,9 @@ var pathutil= require("path");
 var child = require("child_process");
 
 angular.module("App")
-
+/**
+ * main controller for the search view
+ */
 .controller("searchUnityCtrl",function($scope,$window,$http){
     $scope.options;
     $scope.paths;
@@ -41,7 +43,9 @@ angular.module("App")
 
     })()
     
-    
+    /**
+     * once paths have been added, and search button  is clicked, search will start
+     */
     $scope.searchWithPaths = function()
     {
         //debugger;
@@ -86,14 +90,35 @@ angular.module("App")
                     resolve("search finnished part(" + (i+1) + "/" + $scope.paths.length+")");
                 })
                 
-
+            /**
+             *  after collecting all the required data async result will be returned here
+             */
             }).then(function(info){
                 
                 //resPaths = resPaths.concat(tmp);
                 console.log(resPaths);
                 res.unity = resPaths;
-                res.searchPath = $scope.paths;
-                fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
+                res.searchPaths = $scope.paths;
+                /**
+                 * get versions is function that uses powershell to get all the needed iformation about the Uninstall.exe (unity)
+                 */
+                getVersions(res)
+                    .then(function(result){
+                    /**
+                     * putDataIntoJSON function is responsible for formating all the data nicely and writing it to file, as this is the final step for now
+                     */
+                       var rez = putDataIntoJSON(res.searchPaths,result);
+                       if(rez){
+
+                       }else{
+                           console.log("error when trying to put data into JSON");
+                           toastr.error("error when trying to put data into JSON");
+                       }
+                    })
+                    .catch(function(err){
+                        toastr.error(err);
+                        console.error(err);
+                    })
                 toastr.success(info);
                 if(!STOP) loop(i+1);
 
@@ -113,10 +138,89 @@ angular.module("App")
 
 
     }
+    /**
+     * get versions is function that uses powershell to get all the needed iformation about the Uninstall.exe (unity)
+     */
+    function getVersions(res)
+    {   //powershell -command "& {&Get-ItemPropertyValue 'D:\unityVersions\unity1 - Copy (4)\Editor\Uninstall.exe' -name 'VersionInfo' | ConvertTo-Json}"
+        return new promise(function(resolve,reject){
 
-    function getVersions()
+            var asyncOperations = res.unity.length;
+            var result = [];
+
+            res.unity.forEach(function(element){
+                if(fs.existsSync(element+"Uninstall.exe")){
+                    
+                    var command = 'powershell -command "& {&Get-ItemPropertyValue -Path \''+ element + "Uninstall.exe" +'\' -name \'VersionInfo\' | ConvertTo-Json}"';
+                    //console.log(command);
+                    child.exec(command,function(error, ls,stderr){
+
+                        if(error)  {console.error(error);reject(error);} //this is the error on our side
+                        //this is the error that will be outputed if command is invalid or sm sht
+                        if(stderr) {
+                            console.error(stderr);
+                            console.warn("Command that was executed when error happened:\n" + command); 
+                            reject(stderr);
+                        }
+
+                        ls = ls.toString();
+                        ls = ls.replace(/\n|\r/g, "");
+                        if(ls=="") {
+                            toastr.warn("info about unity was returned empty (unity will not be visible as installed)\n "+ element);
+                            asyncOperations--;
+                            if(asyncOperations <= 0){
+                                resolve(result);
+                            }else{
+                                return
+                            }
+                            
+                        };
+                        ls = JSON.parse(ls);
+                        
+
+                        result.push({
+                            parentPath:element,
+                            path:ls.FileName,
+                            version: ls.ProductName,
+                            modules:[
+                                /*{
+                                    name:"Android"
+                                    path:"...Editor"
+                                    version:"N/A"
+                                }*/
+                            ]
+                        });
+                        
+                        asyncOperations--;
+                        if(asyncOperations <= 0){
+                            resolve(result);
+                        }
+                    })
+                                                  
+                }
+                else{
+                    toastr.error(element+"Uninstall.exe does not exists");
+                }
+
+            });
+        })
+        
+    }
+
+    function putDataIntoJSON(searchPaths,allUnity)
     {
-
+        var res = {
+            unity:allUnity,
+            searchPaths:searchPaths,
+        }
+        try{
+            fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
+            return true;
+        }catch(e){
+            return false;
+        }
+        
+            
     }
 
     // function walking(path,filter=[])
