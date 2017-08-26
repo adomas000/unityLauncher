@@ -215,6 +215,7 @@ angular.module("App")
         }
         try{
             fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
+            console.log('test3');
             return true;
         }catch(e){
             return false;
