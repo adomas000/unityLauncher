@@ -17,8 +17,7 @@ walker('D:\\UnityVersions')
           {
             unity.push(dir);
             unityCount++;
-          }
-            
+          }            
         }
 
 }).on('end', () => {

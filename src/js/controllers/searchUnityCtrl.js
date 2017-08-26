@@ -48,6 +48,7 @@ angular.module("App")
         //$scope.all_output = "TEST";
         $scope.paths = $window.paths;
         var walker;
+        var res = {};
         var resPaths = [];
         var STOP = false;
         $scope.count1;
@@ -90,7 +91,9 @@ angular.module("App")
                 
                 //resPaths = resPaths.concat(tmp);
                 console.log(resPaths);
-                fs.writeFileSync('./config/unityPaths.json',JSON.stringify(resPaths));
+                res.unity = resPaths;
+                res.searchPath = $scope.paths;
+                fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
                 toastr.success(info);
                 if(!STOP) loop(i+1);
 
@@ -108,6 +111,11 @@ angular.module("App")
             
         // },5000);
 
+
+    }
+
+    function getVersions()
+    {
 
     }
 
