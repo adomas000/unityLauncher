@@ -190,7 +190,7 @@ angular.module("App")
                                 }*/
                             ]
                         });
-                        
+
                         asyncOperations--;
                         if(asyncOperations <= 0){
                             resolve(result);
@@ -215,9 +215,11 @@ angular.module("App")
         }
         try{
             fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
+            console.log("success!!!");
             return true;
         }catch(e){
             return false;
+            
         }
         
             
