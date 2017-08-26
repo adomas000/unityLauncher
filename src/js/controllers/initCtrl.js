@@ -1,14 +1,17 @@
 angular.module("App")
 
-.controller("initCtrl",function($scope,$http){
+.controller("initCtrl",function($scope,$http,Globals){
     //check if app holds any info about unity paths
     $http({
         method:'GET',
         url:'config/unityPaths.json'
     })
     .then(function(success){
-
-        window.location.hash = "#!/main";
+        debugger;
+        Globals.unity = success.data.unity;
+        Globals.searchPaths = success.data.searchPaths;
+        //window.location.hash = "#!/main";
+        window.location.hash = "#!/firstLaunch";
         console.log("eyyy,unity paths exist so showing main.html");
         
     })

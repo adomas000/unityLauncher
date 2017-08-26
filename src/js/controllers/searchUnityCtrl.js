@@ -9,9 +9,16 @@ angular.module("App")
 /**
  * main controller for the search view
  */
-.controller("searchUnityCtrl",function($scope,$window,$http){
+.controller("searchUnityCtrl",function($scope,$window,$http,Globals){
     $scope.options;
     $scope.paths;
+
+    $scope.dataToShow = [];
+    if(Globals.searchPaths)
+    {
+        $scope.dataToShow = Globals.searchPaths;
+        $scope.$evalAsync();
+    }
 
     (function(){
 
@@ -55,6 +62,7 @@ angular.module("App")
         var res = {};
         var resPaths = [];
         var STOP = false;
+        $scope.found_output = "";
         $scope.count1;
         $scope.count2;
         var skipDirectories = $scope.options.skipDirectories;
@@ -64,9 +72,10 @@ angular.module("App")
             
             if(i < $scope.paths.length) new promise(function(resolve, reject){
 
-                debugger;
+                
                 var ls = child.spawn('./dist/search/search.exe',[$scope.paths[i]]);
                 ls.stdout.on("data",function(data){
+                    debugger;
                     data = data.toString().split("\n");
                     //data.replace(/\n|\r/g, "");
                     //console.log(data);
@@ -215,14 +224,28 @@ angular.module("App")
         }
         try{
             fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
-            console.log('test3');
+            Globals.update();
             return true;
         }catch(e){
             return false;
             
         }
+
+
         
             
+    }
+
+    $scope.removePath = function(e)
+    {
+        debugger;
+        var tmp = Globals.searchPaths;
+        var id  = tmp.indexOf(e.key);
+        if(id<0) return toastr.error("Such path does not exists! deletion was unsuccessful");
+        
+        Globals.searchPaths.splice(id,1);
+        Globals.save();
+        Globals.update();
     }
 
     // function walking(path,filter=[])

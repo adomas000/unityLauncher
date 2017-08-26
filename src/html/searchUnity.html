@@ -2,11 +2,11 @@
 <div ng-controller="searchUnityCtrl" style="height:100%">
     <h3 style="text-align:center;">Search for Unity versions by adding paths or doing automatic search</h3>
     <row id="paths">
-         <div class="col-xs-12 col-md-10 col-md-offset-1">
+         <div class="col-xs-12 col-md-10 col-md-offset-1" ng-repeat="key in dataToShow">
             <div class="input-group path-added-panel">
-                <input type="text" class="form-control" disabled="true">
+                <input type="text" class="form-control" value="{{key}}" disabled="true">
                 <span class="input-group-btn">
-                    <button class="btn btn-danger remove-path" type="button">delete</button>
+                    <button class="btn btn-danger remove-path" ng-click="removePath(this)" type="button">delete</button>
                 </span>
             </div>
             <!-- /input-group -->
@@ -35,12 +35,9 @@
     </row>
 
     <row id="search-footer">
-        <div class="col-xs-12 col-md-5 col-md-offset-1">
-            <a ng-click="searchWithPaths()"  class="btn btn-success form-control search-btn">Search(fast)</a>
-        </div>
-        <div class="col-xs-12 col-md-5 ">
-            <a ng-click="fullSearch()" class="btn btn-warning form-control search-btn">Full PC search(will take longer)</a>
-        </div>
+        <div class="col-xs-12">
+            <a ng-click="searchWithPaths()"  class="btn btn-success form-control search-btn">Search</a>
+        </div>     
     </row>
 
     
@@ -76,7 +73,8 @@
 
         (function(){
            
-            $("#paths > div").first().remove();
+            //$("#paths > div").first().remove();
+            getPathsFromConfig();
 
             $("#paths").on("click", ".remove-path",function(){
                 //debugger;
@@ -86,10 +84,12 @@
                 if(index < 0)
                 {
                     toastr.error("Error when removing path(no such path found in saved) maybe it was already removed?");
+                    return;
                 }
                 paths.splice(index,index+1);
                 $(this).parent().parent().parent().remove();
                 toastr.info("path removed succesfully");
+                console.log("PATHS\n"+paths);
                  //:DDDDDD gosh I am tired (it does indeed work)
             });
 
@@ -135,6 +135,10 @@
             if(!valid)
             {
                 toastr.error("invalid path");
+                return;
+            }
+            if(paths.includes(path)){
+                toastr.error("Duplicate paths are not allowed!");
                 return;
             }
             $pathNodeClone.find(".path-added-panel > input").val(path);
@@ -187,6 +191,20 @@
             console.log("cleared interval");
             clearInterval(scroll);
         })
+
+        function getPathsFromConfig()
+        {   try{
+                var tmp = fs.readFileSync("./config/unityPaths.json");
+                if(tmp)
+                {
+                    paths = JSON.parse(tmp.toString());
+                    paths = paths.searchPaths;
+                }
+            }catch(e){
+                console.log("unityPaths.json is not present");
+            }
+            
+        }
         
     </script>
 </div>
