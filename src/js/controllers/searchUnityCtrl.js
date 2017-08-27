@@ -4,6 +4,7 @@ var walk = require('walk')
 var promise = require("promise");
 var pathutil= require("path");
 var child = require("child_process");
+const _dir = pathutil.dirname(pathutil.dirname(pathutil.dirname(__dirname)));
 
 angular.module("App")
 /**
@@ -72,8 +73,9 @@ angular.module("App")
             
             if(i < $scope.paths.length) new promise(function(resolve, reject){
 
-                
-                var ls = child.spawn('./dist/search/search.exe',[$scope.paths[i]]);
+                //debugger;
+                //console.log(_dir + "\\dist\\search\\search.exe");
+                var ls = child.spawn(_dir+'\\dist\\search\\search.exe',[$scope.paths[i]]);
                 ls.stdout.on("data",function(data){
                     debugger;
                     data = data.toString().split("\n");
@@ -223,7 +225,7 @@ angular.module("App")
             searchPaths:searchPaths,
         }
         try{
-            fs.writeFileSync('./config/unityPaths.json',JSON.stringify(res));
+            fs.writeFileSync(_dir+'\\config\\unityPaths.json',JSON.stringify(res));
             Globals.update();
             return true;
         }catch(e){

@@ -1,4 +1,6 @@
 var fs = require("fs");
+var _path = require("path");
+const _dir = _path.dirname(_path.dirname(_path.dirname(__dirname)));
 
 angular.module("App")
 
@@ -11,11 +13,11 @@ angular.module("App")
             unity:this.unity,
             searchPaths:this.searchPaths
         };
-        fs.writeFileSync("./config/unityPaths.json",JSON.stringify(tmp));
+        fs.writeFileSync(_dir+"\\config\\unityPaths.json",JSON.stringify(tmp));
     }
 
     this.update = function(){
-       var tmp = fs.readFileSync("./config/unityPaths.json");
+       var tmp = fs.readFileSync(_dir+"\\config\\unityPaths.json");
        this.unity = tmp.unity;
        this.searchPaths = tmp.searchPaths;
     }
