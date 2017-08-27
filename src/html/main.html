@@ -1,0 +1,18 @@
+<div ng-controller="searchUnityCtrl" style="height:100%;margin-top:80px;">
+    <h1>hey</h1>
+    <div id="main" class="king-table">
+    </div>
+    <script>
+        var table = new KingTable({
+            id:"table",
+            element:document.getElementById("main"),
+            data: [{id:"1"},{id:"2"},{id:"3"}],
+            columns:{
+                id:"id"
+            }
+        });
+        table.render();
+        console.log("this ");
+        console.log(table);
+    </script>
+</div>

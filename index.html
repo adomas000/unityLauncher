@@ -19,7 +19,12 @@
     <script src="./src/js/routes/router.js"></script>
     
     <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
-    <script src="node_modules/toastr/build/toastr.min.js"></script>
+    <script src="node_modules/toastr/build/toastr.min.js"></script> 
+    <!--king table-->
+
+    <script src="./libaries/KingTable/dist/kingtable.js"></script>
+    <link rel="stylesheet" href="./libaries/KingTable/dist/styles/kingtable.core.css">
+
     <script>
      toastr.options = {
         "closeButton": false,
@@ -42,8 +47,62 @@
     <script>if (window.module) module = window.module;</script>
     <!--my css-->
     <link rel="stylesheet" href="./src/css/searchUnity.css">
+    <link rel="stylesheet" href="./src/css/header.css">
     <!--end-->
   </head>
+  <!--header-->
+    <div class="navbar-wrapper">
+      <div class="container-fluid">
+          <nav class="navbar navbar-fixed-top">
+              <div class="container">
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" href="#">Logo</a>
+                  </div>
+                  <div id="navbar" class="navbar-collapse collapse">
+                      <ul class="nav navbar-nav pull-right menu">
+                          <li class="active"><a href="#!/main" class="">Home</a></li>
+                          <li><a href="#!/search">Search</a></li>
+                          <!--<li class=" dropdown">
+                              <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Departments <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                  <li class=" dropdown">
+                                      <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View Departments</a>
+                                  </li>
+                                  <li><a href="#">Add New</a></li>
+                              </ul>
+                          </li>
+                          <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Managers <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">View Managers</a></li>
+                                  <li><a href="#">Add New</a></li>
+                              </ul>
+                          </li>
+                          <li class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Staff <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">View Staff</a></li>
+                                  <li><a href="#">Add New</a></li>
+                                  <li><a href="#">Bulk Upload</a></li>
+                              </ul>
+                          </li>
+                          <li class=" down"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HR <span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">Change Time Entry</a></li>
+                                  <li><a href="#">Report</a></li>
+                              </ul>
+                          </li>-->
+                      </ul>
+                  </div>
+              </div>
+          </nav>
+      </div>
+  </div>
+  <!--end of header-->
   <body ng-app="App" ng-controller="initCtrl">
     <ng-view></ng-view>
   </body>
@@ -53,5 +112,20 @@
     require("./src/js/controllers/initCtrl.js");
     require("./src/js/controllers/searchUnityCtrl.js");
     require("./src/js/services/globals.js")
+  </script>
+  <script>
+    $(".menu >li").click(function(){
+      var el = $(this);
+      $(".menu >li").each(function(index, item){
+          if(el.is($(item)))
+          {
+            $(this).addClass("active");
+          }else{
+            $(this).removeClass("active");
+          }
+          
+      })
+
+    })
   </script>
 </html>

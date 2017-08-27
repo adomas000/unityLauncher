@@ -17,7 +17,8 @@ angular.module("App")
     }
 
     this.update = function(){
-       var tmp = fs.readFileSync(_dir+"\\config\\unityPaths.json");
+       var tmp = fs.readFileSync(_dir+"\\config\\unityPaths.json","utf-8");
+       tmp = JSON.parse(tmp);
        this.unity = tmp.unity;
        this.searchPaths = tmp.searchPaths;
     }

@@ -15,6 +15,7 @@ angular.module("App")
     $scope.paths;
 
     $scope.dataToShow = [];
+    
     if(Globals.searchPaths)
     {
         $scope.dataToShow = Globals.searchPaths;
@@ -35,11 +36,11 @@ angular.module("App")
                 if($scope.options.filename && (typeof $scope.options.skipDirectories == "object") && (typeof $scope.options.filename == "string"))
                 {
                     
-                   toastr.success("setup.json is valid"); 
+                   console.log("setup.json is valid"); 
                 }
                 else
                 {
-                   toastr.error("setup.json is not valid"); 
+                   console.error("setup.json is not valid"); 
                 }
             }
             console.log($scope.options);
@@ -77,7 +78,7 @@ angular.module("App")
                 //console.log(_dir + "\\dist\\search\\search.exe");
                 var ls = child.spawn(_dir+'\\dist\\search\\search.exe',[$scope.paths[i]]);
                 ls.stdout.on("data",function(data){
-                    debugger;
+                    
                     data = data.toString().split("\n");
                     //data.replace(/\n|\r/g, "");
                     //console.log(data);
@@ -240,7 +241,7 @@ angular.module("App")
 
     $scope.removePath = function(e)
     {
-        debugger;
+        
         var tmp = Globals.searchPaths;
         var id  = tmp.indexOf(e.key);
         if(id<0) return toastr.error("Such path does not exists! deletion was unsuccessful");

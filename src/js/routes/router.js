@@ -6,7 +6,11 @@ angular.module("App",["ngRoute","luegg.directives"])
         //controller:"initCtrl"
         //templateUrl:"src/html/test.html"
     })
-    .when("/firstLaunch",{
+    .when("/main",{
+        templateUrl:"src/html/main.html"
+        //templateUrl:"src/html/test.html"
+    })
+    .when("/search",{
         templateUrl:"src/html/searchUnity.html"
     })
     .otherwise({
