@@ -1,18 +1,20 @@
-<div ng-controller="searchUnityCtrl" style="height:100%;margin-top:80px;">
+<div ng-controler="mainCtrl" style="height:100%;margin-top:80px;">
     <h1>hey</h1>
-    <div id="main" class="king-table">
-    </div>
+    
+        <div  style="margin:0 auto; width:95%;overflow:hidden">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    
+                   
+                </div>
+            </div>
+        </div>
     <script>
-        var table = new KingTable({
-            id:"table",
-            element:document.getElementById("main"),
-            data: [{id:"1"},{id:"2"},{id:"3"}],
-            columns:{
-                id:"id"
-            }
-        });
-        table.render();
+       
+       
         console.log("this ");
         console.log(table);
+
+        //$(".launch").html("<button> hello there </button>");
     </script>
 </div>
