@@ -10,8 +10,8 @@ angular.module("App")
         
         Globals.unity = success.data.unity;
         Globals.searchPaths = success.data.searchPaths;
-        //window.location.hash = "#!/main";
-        window.location.hash = "#!/search";
+        window.location.hash = "#!/main";
+        //window.location.hash = "#!/search";
         console.log("eyyy,unity paths exist so showing main.html");
         
     })

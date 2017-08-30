@@ -1,11 +1,20 @@
 <div ng-controler="mainCtrl" style="height:100%;margin-top:80px;">
 
-        <div id="table-wrap" style="width:95%;margin:0 auto;background-color:white; max-height:90vh;height:90vh; overflow:auto; padding:10px; border-radius:2px;">
+        <div id="table-wrap" style="width:95%;margin:0 auto;background-color:white; max-height:85vh; overflow:auto; padding:10px; border-radius:2px;">
           <table style="padding:10px;" id="table" ng-table="options" class="table table-condensed table-bordered table-striped">
-              <tr ng-repeat="unity in $data">
-                 <td data-title="'Version'" sortable="'version'">{{unity.version}}</td>
-                 <td data-title="'modules'">{{unity.path}}</td>
-              </tr>
+                <tr class="ng-table-group" ng-repeat-start="(key,el) in group">
+                    <td>
+                        <a href="" ng-click="unity.$hideRows = !unity.$hideRows">
+                        <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': unity.$hideRows, 'glyphicon-chevron-down': !unity.$hideRows }"></span>
+                        <strong>{{ key }}</strong>
+                        </a>
+                    </td>
+                </tr>
+                <tr ng-repeat="unity in el" ng-repeat-end>
+                
+                    <td data-title="'Version'" sortable="'version'" groupable="'group'">{{unity.version}}</td>
+                    <td data-title="'path'">{{unity.path}}</td>
+                </tr> 
           </table>
        </div>
        <script>
