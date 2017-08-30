@@ -1,20 +1,32 @@
 <div ng-controler="mainCtrl" style="height:100%;margin-top:80px;">
-    <h1>hey</h1>
-    
-        <div  style="margin:0 auto; width:95%;overflow:hidden">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    
-                   
-                </div>
-            </div>
-        </div>
-    <script>
-       
-       
-        console.log("this ");
-        console.log(table);
 
-        //$(".launch").html("<button> hello there </button>");
-    </script>
+        <div id="table-wrap" style="width:95%;margin:0 auto;background-color:white; max-height:90vh;height:90vh; overflow:auto; padding:10px; border-radius:2px;">
+          <table style="padding:10px;" id="table" ng-table="options" class="table table-condensed table-bordered table-striped">
+              <tr ng-repeat="unity in $data">
+                 <td data-title="'Version'" sortable="'version'">{{unity.version}}</td>
+                 <td data-title="'modules'">{{unity.path}}</td>
+              </tr>
+          </table>
+       </div>
+       <script>
+        //    (function(){
+               
+        //        var h = $(window).height();
+        //        if(h<$("#table").height()){
+        //         $("#table-wrap").outerHeight(h-200);
+        //        }else{
+        //         $("#table-wrap").outerHeight($("#table").height());
+        //        }
+               
+        //    })()
+
+        //    $(window).resize(function(){
+        //         var h = $(window).height();
+        //         if(h<$("#table").height()){
+        //             $("#table-wrap").outerHeight(h-200);
+        //         }else{
+        //             $("#table-wrap").outerHeight($("#table").height());
+        //         }
+        //    })
+       </script>
 </div>

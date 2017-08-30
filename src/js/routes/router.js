@@ -1,4 +1,4 @@
-angular.module("App",["ngRoute","luegg.directives"])
+angular.module("App",["ngRoute","luegg.directives","ngTable"])
 
 .config(function($routeProvider){
     $routeProvider
@@ -7,7 +7,9 @@ angular.module("App",["ngRoute","luegg.directives"])
         //templateUrl:"src/html/test.html"
     })
     .when("/main",{
+        controller:"mainCtrl",
         templateUrl:"src/html/main.html"
+        
         //templateUrl:"src/html/test.html"
     })
     .when("/search",{

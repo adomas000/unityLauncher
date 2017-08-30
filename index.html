@@ -13,17 +13,16 @@
     <script src="node_modules/angular-route/angular-route.min.js"></script>
     <script src="node_modules/angularjs-scroll-glue/src/scrollglue.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/ng-table/bundles/ng-table.js"></script>
     
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    
+    <link rel="stylesheet" href="node_modules/ng-table/bundles/ng-table.css">
+
     <script src="./src/js/routes/router.js"></script>
     
     <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
     <script src="node_modules/toastr/build/toastr.min.js"></script> 
     <!--king table-->
-
-    <script src="./libaries/KingTable/dist/kingtable.js"></script>
-    <link rel="stylesheet" href="./libaries/KingTable/dist/styles/kingtable.core.css">
 
     <script>
      toastr.options = {
@@ -48,6 +47,7 @@
     <!--my css-->
     <link rel="stylesheet" href="./src/css/searchUnity.css">
     <link rel="stylesheet" href="./src/css/header.css">
+    <link rel="stylesheet" href="./src/css/mainView.css">
     <!--end-->
   </head>
   <!--header-->
@@ -111,7 +111,8 @@
     require("./src/js/routes/router.js");
     require("./src/js/controllers/initCtrl.js");
     require("./src/js/controllers/searchUnityCtrl.js");
-    require("./src/js/services/globals.js")
+    require("./src/js/controllers/mainCtrl.js");
+    require("./src/js/services/globals.js");
   </script>
   <script>
     $(".menu >li").click(function(){
