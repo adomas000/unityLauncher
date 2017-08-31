@@ -7,61 +7,63 @@ angular.module("App")
     (function(){
         Globals.update();
         $scope.data = Globals.unity;
-       
+
             //tmp = el.version.replace(/(Unity)|(\(32-bit\)|\(64-bit\)$)|\s/g,"");
         console.log($scope.data);
-        
-        
-        // $scope.data.forEach(function(element) {
+
+        // $scope.data.forEach(function(element){
         //     tmp = element.version.replace(/(Unity)|(\(32-bit\)|\(64-bit\)$)|\s/g,"");
         //     tmp = tmp.split(".");
-        //     element.group = tmp[0]+"."+tmp[1];
-
-        //     if(!$scope.group.includes(tmp[0]+"."+tmp[1])){
-        //         $scope.group.push(tmp[0]+"."+tmp[1]);
+        //     group = tmp[0]+"."+tmp[1];
+        //     if(!grouped[group]){
+        //       grouped[group] = [];
+        //       grouped[group].push(element);
+        //     } else{
+        //       grouped[group].push(element);
         //     }
-            
         // });
 
         $scope.data.forEach(function(element){
             tmp = element.version.replace(/(Unity)|(\(32-bit\)|\(64-bit\)$)|\s/g,"");
             tmp = tmp.split(".");
-            group = tmp[0]+"."+tmp[1];
-            (!grouped[group])? grouped[group] = [] : grouped[group].push(element);
+            element.baseVersion = tmp[0]+"."+tmp[1];
         });
-
+        
         console.warn("<here>");
-        console.log(grouped);
+        console.log($scope.data);
 
-        $scope.group = grouped;
+        //console.log(grouped);
+
+        //$scope.group = grouped;
 
         //console.log($scope.group);
-        $scope.options = new NgTableParams({}, {dataset: $scope.data});
+        $scope.options = createUsingFullOptions()
 
     })()
 
 
-          
+
     function createUsingFullOptions() {
         var initialParams = {
-            count: 5, // initial page size
+          //  count: 5, // initial page size
+            group:"baseVersion"
         };
         var initialSettings = {
-            
+
             // page size buttons (right set of buttons in demo)
-            counts: [],
+            //counts: [],
             // determines the pager buttons (left set of buttons in demo)
-            paginationMaxBlocks: 13,
-            paginationMinBlocks: 2,
+            //paginationMaxBlocks: 13,
+            //paginationMinBlocks: 2,
             dataset: $scope.data,
         };
         return new NgTableParams(initialParams, initialSettings);
     }
-    
+
     $scope.reverse = function(){
         console.log("s");
         $scope.options = new NgTableParams({}, {dataset: $scope.data.reverse()});
     }
-    
+
 
 });

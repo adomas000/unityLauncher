@@ -15,7 +15,7 @@ angular.module("App")
     $scope.paths;
 
     $scope.dataToShow = [];
-    
+
     if(Globals.searchPaths)
     {
         $scope.dataToShow = Globals.searchPaths;
@@ -35,12 +35,12 @@ angular.module("App")
                 //debugger;
                 if($scope.options.filename && (typeof $scope.options.skipDirectories == "object") && (typeof $scope.options.filename == "string"))
                 {
-                    
-                   console.log("setup.json is valid"); 
+
+                   console.log("setup.json is valid");
                 }
                 else
                 {
-                   console.error("setup.json is not valid"); 
+                   console.error("setup.json is not valid");
                 }
             }
             console.log($scope.options);
@@ -51,7 +51,7 @@ angular.module("App")
         });
 
     })()
-    
+
     /**
      * once paths have been added, and search button  is clicked, search will start
      */
@@ -68,17 +68,17 @@ angular.module("App")
         $scope.count1;
         $scope.count2;
         var skipDirectories = $scope.options.skipDirectories;
-        
+
         //loop for the paths provided
         (function loop(i){
-            
+
             if(i < $scope.paths.length) new promise(function(resolve, reject){
 
                 //debugger;
                 //console.log(_dir + "\\dist\\search\\search.exe");
                 var ls = child.spawn(_dir+'\\dist\\search\\search.exe',[$scope.paths[i]]);
                 ls.stdout.on("data",function(data){
-                    
+
                     data = data.toString().split("\n");
                     //data.replace(/\n|\r/g, "");
                     //console.log(data);
@@ -91,22 +91,22 @@ angular.module("App")
                             $scope.found_output += el + "\n";
                             $scope.count1++;
                             $scope.$evalAsync();
-                            
+
                         }
-                        
+
                     });
-                    
-                    
+
+
                 })
                 ls.stdout.on("end",function(data){
                     resolve("search finnished part(" + (i+1) + "/" + $scope.paths.length+")");
                 })
-                
+
             /**
              *  after collecting all the required data async result will be returned here
              */
             }).then(function(info){
-                
+
                 //resPaths = resPaths.concat(tmp);
                 console.log(resPaths);
                 res.unity = resPaths;
@@ -136,16 +136,16 @@ angular.module("App")
 
             }).catch(function(error){
                 toastr.error(error);
-                console.log(error);  
+                console.log(error);
                 if(!STOP) loop(i+1);
             });
-           
+
         })(0)
 
         // setTimeout(function(){
         //     //console.log(search);
         //     STOP = true;
-            
+
         // },5000);
 
 
@@ -162,7 +162,7 @@ angular.module("App")
 
             res.unity.forEach(function(element){
                 if(fs.existsSync(element+"Uninstall.exe")){
-                    
+
                     var command = 'powershell -command "& {&Get-ItemPropertyValue -Path \''+ element + "Uninstall.exe" +'\' -name \'VersionInfo\' | ConvertTo-Json}"';
                     //console.log(command);
                     child.exec(command,function(error, ls,stderr){
@@ -171,7 +171,7 @@ angular.module("App")
                         //this is the error that will be outputed if command is invalid or sm sht
                         if(stderr) {
                             console.error(stderr);
-                            console.warn("Command that was executed when error happened:\n" + command); 
+                            console.warn("Command that was executed when error happened:\n" + command);
                             reject(stderr);
                         }
 
@@ -185,10 +185,10 @@ angular.module("App")
                             }else{
                                 return
                             }
-                            
+
                         };
                         ls = JSON.parse(ls);
-                        
+
 
                         result.push({
                             parentPath:element,
@@ -208,7 +208,7 @@ angular.module("App")
                             resolve(result);
                         }
                     })
-                                                  
+
                 }
                 else{
                     toastr.error(element+"Uninstall.exe does not exists");
@@ -216,7 +216,7 @@ angular.module("App")
 
             });
         })
-        
+
     }
 
     function putDataIntoJSON(searchPaths,allUnity)
@@ -231,21 +231,21 @@ angular.module("App")
             return true;
         }catch(e){
             return false;
-            
+
         }
 
 
-        
-            
+
+
     }
 
     $scope.removePath = function(e)
     {
-        
+
         var tmp = Globals.searchPaths;
         var id  = tmp.indexOf(e.key);
         if(id<0) return toastr.error("Such path does not exists! deletion was unsuccessful");
-        
+
         Globals.searchPaths.splice(id,1);
         Globals.save();
         Globals.update();
@@ -267,29 +267,29 @@ angular.module("App")
     //             {
     //                 if(dirs[0].name == "Editor" && dirs[1].name== "MonoDevelop")
     //                 {
-                        
+
     //                     console.log(root+"\\"+dirs[0].name);
     //                     //walker = walk.walk(path.dirname(root),{filters: $scope.options.skipDirectories});
-                        
+
     //                     return resolve({
     //                         unityPath:root+"\\"+dirs[0].name,
     //                         skipPath:pathutil.basename(root)
     //                     })
     //                 }
     //             }
-    //             next(); 
-                    
+    //             next();
+
     //             // fs.readFile(fileStats.name, function () {
     //             //     $scope.all_output += root +"\\"+ fileStats.name + "\n";
     //             //     $scope.count2++;
     //             //     $scope.$evalAsync()
-                    
+
     //             //     if(fileStats.name.match(/(.html)$/))
     //             //     {
     //             //         //console.log("found: "+ root +"\\"+ fileStats.name);
     //             //         $scope.found_output += root +"\\"+ fileStats.name + "\n";
     //             //         $scope.count1++;
-    //             //         $scope.$evalAsync()                        
+    //             //         $scope.$evalAsync()
     //             //         tmp.push(root +"\\"+ fileStats.name);
     //             //         //console.log(fileStats);
     //             //     }
@@ -298,16 +298,16 @@ angular.module("App")
     //         });
 
     //         walker.on("end", function () {
-    //             resolve();                 
-                
+    //             resolve();
+
     //         });
 
     //         walker.on("error", function (e) {
     //             reject(e);
-                
+
     //         });
     //     });
-   
+
     // }
 
 });
