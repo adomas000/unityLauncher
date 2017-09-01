@@ -13,7 +13,6 @@ angular.module("App")
 .controller("searchUnityCtrl",function($scope,$window,$http,Globals){
     $scope.options;
     $scope.paths;
-
     $scope.dataToShow = [];
 
     if(Globals.searchPaths)
@@ -60,13 +59,14 @@ angular.module("App")
         //debugger;
         //$scope.all_output = "TEST";
         $scope.paths = $window.paths;
+        var loopCount = $scope.paths.length;
         var walker;
         var res = {};
         var resPaths = [];
         var STOP = false;
         $scope.found_output = "";
-        $scope.count1;
-        $scope.count2;
+        $scope.count1 = 0;
+        $scope.count2 = 0;
         var skipDirectories = $scope.options.skipDirectories;
 
         //loop for the paths provided
@@ -121,7 +121,13 @@ angular.module("App")
                      */
                        var rez = putDataIntoJSON(res.searchPaths,result);
                        if(rez){
-
+                         loopCount--;
+                         if(loopCount<=0){
+                           toastr.success("All information received");
+                           $scope.stop_button = "Close";
+                           $scope.$apply();
+                           $window.stopScroll();
+                         }
                        }else{
                            console.log("error when trying to put data into JSON");
                            toastr.error("error when trying to put data into JSON");
@@ -161,6 +167,7 @@ angular.module("App")
             var result = [];
 
             res.unity.forEach(function(element){
+
                 if(fs.existsSync(element+"Uninstall.exe")){
 
                     var command = 'powershell -command "& {&Get-ItemPropertyValue -Path \''+ element + "Uninstall.exe" +'\' -name \'VersionInfo\' | ConvertTo-Json}"';
@@ -181,6 +188,7 @@ angular.module("App")
                             toastr.warn("info about unity was returned empty (unity will not be visible as installed)\n "+ element);
                             asyncOperations--;
                             if(asyncOperations <= 0){
+
                                 resolve(result);
                             }else{
                                 return
@@ -205,6 +213,7 @@ angular.module("App")
 
                         asyncOperations--;
                         if(asyncOperations <= 0){
+
                             resolve(result);
                         }
                     })
@@ -233,9 +242,18 @@ angular.module("App")
             return false;
 
         }
+    }
 
+    $scope.addPath = function()
+    {
 
-
+        // path = $window.newPath;
+        // if(Globals.searchPaths.includes(path)){
+        //   return toastr.error("such path already exists");
+        // }
+        // Globals.searchPaths.push(path);
+        // Globals.save();
+        // Globals.update();
 
     }
 

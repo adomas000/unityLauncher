@@ -1,0 +1,8 @@
+tr:hover{
+  color:#0CB4CC;
+}
+
+td:nth-child(1){
+  min-width:165px;
+  width:165px!important;
+}

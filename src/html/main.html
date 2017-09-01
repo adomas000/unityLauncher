@@ -2,50 +2,45 @@
 
         <div id="table-wrap" style="width:95%;margin:0 auto;background-color:white; max-height:85vh; overflow:auto; padding:10px; border-radius:2px;">
 
-        <table ng-table="options" class="table table-condensed table-bordered table-hover">
+          <button style="margin:0; margin-bottom:2px; float:right;" class="btn btn-default" ng-click="toggle()">toggle</button>
+        <table style="margin:0;" ng-table="options" class="table table-condensed table-bordered table-hover">
           <!-- <colgroup>
+            <col width="300px" />
+            <col width="20%" />
             <col width="60%" />
-            <col width="20%" />
-            <col width="20%" />
           </colgroup> -->
           <tr class="ng-table-group" ng-repeat-start="group in $groups">
-            <td colspan="2">
-              <a href="" ng-click="group.$hideRows = !group.$hideRows">
-                <!-- <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span> -->
+            <td colspan="3">
+              <a href="" ng-hide="header" ng-click="group.$hideRows = !group.$hideRows">
+                <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
                 <strong>{{ group.value }}</strong>
               </a>
             </td>
           </tr>
           <tr ng-hide="group.$hideRows" ng-repeat="unity in group.data" ng-repeat-end>
-
-            <td data-title="'Version'" sortable="'version'" groupable="'version'">
+            <td>
+              <button class="btn btn-default">Launch</button>
+              <button class="btn btn-default">Settings</button>
+            </td>
+            <td data-title="'Version'" filter="{version:'text'}" sortable="'version'" groupable="'version'">
               {{unity.version}}
             </td>
             <td sortable="'path'" data-title="'path'" groupable="'path'">
-              {{unity.path}}
+              {{unity.parentPath}}
             </td>
           </tr>
         </table>
+
        </div>
        <script>
-        //    (function(){
+        var del = setInterval(function() {
+            var el = $(".ng-table-group-close");
+            if(el.length>0){
+              el.trigger("click");
+              clearInterval(del);
+            }
 
-        //        var h = $(window).height();
-        //        if(h<$("#table").height()){
-        //         $("#table-wrap").outerHeight(h-200);
-        //        }else{
-        //         $("#table-wrap").outerHeight($("#table").height());
-        //        }
+        },200)
 
-        //    })()
-
-        //    $(window).resize(function(){
-        //         var h = $(window).height();
-        //         if(h<$("#table").height()){
-        //             $("#table-wrap").outerHeight(h-200);
-        //         }else{
-        //             $("#table-wrap").outerHeight($("#table").height());
-        //         }
-        //    })
        </script>
 </div>

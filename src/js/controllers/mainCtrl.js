@@ -28,16 +28,17 @@ angular.module("App")
             tmp = tmp.split(".");
             element.baseVersion = tmp[0]+"."+tmp[1];
         });
-        
+
         console.warn("<here>");
         console.log($scope.data);
+
 
         //console.log(grouped);
 
         //$scope.group = grouped;
 
         //console.log($scope.group);
-        $scope.options = createUsingFullOptions()
+        $scope.options = createUsingFullOptions();
 
     })()
 
@@ -46,7 +47,8 @@ angular.module("App")
     function createUsingFullOptions() {
         var initialParams = {
           //  count: 5, // initial page size
-            group:"baseVersion"
+            group:"baseVersion",
+            
         };
         var initialSettings = {
 
@@ -55,6 +57,9 @@ angular.module("App")
             // determines the pager buttons (left set of buttons in demo)
             //paginationMaxBlocks: 13,
             //paginationMinBlocks: 2,
+            groupOptions: {
+              isExpanded: false
+            },
             dataset: $scope.data,
         };
         return new NgTableParams(initialParams, initialSettings);
@@ -63,6 +68,11 @@ angular.module("App")
     $scope.reverse = function(){
         console.log("s");
         $scope.options = new NgTableParams({}, {dataset: $scope.data.reverse()});
+    }
+
+    $scope.toggle = function () {
+        $scope.options.settings().groupOptions.isExpanded = ($scope.options.settings().groupOptions.isExpanded) ? false : true;
+        $scope.options.reload();
     }
 
 

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Hello World!</title>
     <!--fixes electron stuff to handle window module and declare it-->
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script> 
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <!--// toastr options-->
-    
+
 
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/angular/angular.min.js"></script>
@@ -14,14 +14,14 @@
     <script src="node_modules/angularjs-scroll-glue/src/scrollglue.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/ng-table/bundles/ng-table.js"></script>
-    
+
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="node_modules/ng-table/bundles/ng-table.css">
 
     <script src="./src/js/routes/router.js"></script>
-    
+
     <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
-    <script src="node_modules/toastr/build/toastr.min.js"></script> 
+    <script src="node_modules/toastr/build/toastr.min.js"></script>
     <!--king table-->
 
     <script>
@@ -62,7 +62,7 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="#">Logo</a>
+                      <a class="navbar-brand" href="#">Unity</a>
                   </div>
                   <div id="navbar" class="navbar-collapse collapse">
                       <ul class="nav navbar-nav pull-right menu">
@@ -106,7 +106,7 @@
   <body ng-app="App" ng-controller="initCtrl">
     <ng-view></ng-view>
   </body>
-  
+
   <script>
     require("./src/js/routes/router.js");
     require("./src/js/controllers/initCtrl.js");
@@ -124,7 +124,7 @@
           }else{
             $(this).removeClass("active");
           }
-          
+
       })
 
     })
