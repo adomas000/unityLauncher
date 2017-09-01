@@ -19,7 +19,7 @@
           </tr>
           <tr ng-hide="group.$hideRows" ng-repeat="unity in group.data" ng-repeat-end>
             <td>
-              <button class="btn btn-default">Launch</button>
+              <button class="btn btn-default" ng-click="launchUnity({{unity.}})" >Launch</button>
               <button class="btn btn-default">Settings</button>
             </td>
             <td data-title="'Version'" filter="{version:'text'}" sortable="'version'" groupable="'version'">
@@ -33,6 +33,8 @@
 
        </div>
        <script>
+
+        var launchOptions = {};
         var del = setInterval(function() {
             var el = $(".ng-table-group-close");
             if(el.length>0){
